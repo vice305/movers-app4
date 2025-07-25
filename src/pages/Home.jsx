@@ -1,6 +1,15 @@
-import React from 'react';
+import React ,{useState} from 'react';
+import logo from '../assets/logo.png';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
+  const navigate = useNavigate();
+
+  const handleGetQuote = () => {
+    navigate('/quote-request');
+  };
+
+
   return (
     <div className="container mx-auto p-4">
       <section className="text-center py-16 bg-blue-600 text-white">
@@ -81,7 +90,7 @@ function Home() {
         <h2 className="text-3xl font-bold">Moving Made Simple & Stress-Free</h2>
         <p className="text-gray-600 mt-2">Connect with verified, trusted movers in your area. Get instant quotes, book your move, and track everything in real-time. Moving has never been this easy.</p>
         <div className="mt-6">
-          <button className="bg-blue-600 text-white px-6 py-2 rounded mr-4">Get Free Quote</button>
+          <button onClick={handleGetQuote} className="bg-blue-600 text-white px-6 py-2 rounded mr-4">Get Free Quote</button>
           <button className="bg-gray-200 text-gray-800 px-6 py-2 rounded">Call Now</button>
         </div>
         <div className="mt-8 flex justify-center space-x-8 text-gray-600">
@@ -89,15 +98,11 @@ function Home() {
           <div>98% Success Rate</div>
           <div>24/7 Support</div>
         </div>
-        <div className="mt-4">
-          <input type="text" placeholder="Get Instant Quote" className="p-2 border rounded" />
-          <button className="bg-blue-600 text-white px-4 py-2 rounded ml-2">Book This Move</button>
-        </div>
       </section>
       <footer className="py-4 text-center text-gray-600">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <img src={"src/assets/Movemate logo.png"} alt="Move Mate Logo" className="h-8 mb-2" />
+            <img src={logo} alt="Move Mate Logo" className="h-8 mb-50" />
             <p>Making moving simple, stress-free, and affordable for everyone.</p>
           </div>
           <div>
