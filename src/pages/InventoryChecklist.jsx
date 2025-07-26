@@ -13,9 +13,18 @@ function InventoryChecklist() {
   const fetchInventory = async () => {
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        setMessage('Please log in to view inventory.');
+        return;
+      }
       const response = await axios.get('http://localhost:5000/api/inventory/list', {
         headers: { Authorization: `Bearer ${token}` },
       });
+      if (response.status === 401) {
+        localStorage.removeItem('token');
+        setMessage('Session expired. Please log in again.');
+        return;
+      }
       setItems(response.data);
     } catch (error) {
       setMessage('Error fetching inventory');
@@ -32,9 +41,18 @@ function InventoryChecklist() {
     if (newItem.name.trim()) {
       try {
         const token = localStorage.getItem('token');
+        if (!token) {
+          setMessage('Please log in to add items.');
+          return;
+        }
         const response = await axios.post('http://localhost:5000/api/inventory/add', newItem, {
           headers: { Authorization: `Bearer ${token}` },
         });
+        if (response.status === 401) {
+          localStorage.removeItem('token');
+          setMessage('Session expired. Please log in again.');
+          return;
+        }
         setItems([...items, response.data]);
         setNewItem({ name: '', quantity: 1, category: 'Furniture' });
         setMessage('Item added successfully!');

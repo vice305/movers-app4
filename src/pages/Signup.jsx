@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import logo from '../assets/logo.png'; 
+import { useNavigate } from 'react-router-dom';
 
 function Signup() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -47,7 +48,8 @@ function Signup() {
       const response = await axios.post('http://localhost:5000/api/auth/signup', formData, {
         headers: { 'Content-Type': 'application/json' },
       });
-      setMessage('Signup successful! Please log in.');
+      setMessage('Signup successful! Redirecting to login...');
+      setTimeout(() => navigate('/login'), 1000); // Redirect after 1 second to show message
     } catch (error) {
       setMessage('Signup failed. Please try again.');
       console.error(error);
@@ -59,7 +61,7 @@ function Signup() {
       <div className="bg-white p-8 rounded-xl shadow-xl w-full max-w-md">
         <div className="flex justify-center mb-6">
           <div className="bg-blue-500 text-white p-4 rounded-lg">
-            <img src={logo} alt="Move Mate Logo" className="h-8 mb-50" />
+            ⚡
           </div>
         </div>
         <h2 className="text-center text-2xl font-bold text-blue-700">Create an Account</h2>
@@ -127,7 +129,7 @@ function Signup() {
         </form>
 
         {message && (
-          <p className="mt-4 text-center text-sm text-red-500">{message}</p>
+          <p className="mt-4 text-center text-sm text-green-600">{message}</p>
         )}
 
         <p className="text-center text-sm text-gray-600 mt-6">

@@ -1,24 +1,35 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import Dashboard from './pages/Dashboard';
+import QuoteRequest from './pages/QuoteRequest';
 import MoveRequestForm from './pages/MoveRequestForm';
 import InventoryChecklist from './pages/InventoryChecklist';
-import QuoteApproval from './pages/QuoteApproval';
-import BookingConfirmation from './pages/BookingConfirmation';
-import QuoteRequest from './pages/QuoteRequest';
+
+const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem('token');
+  return token ? children : <Navigate to="/login" />;
+};
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Simulate login state
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleLogin = () => setIsLoggedIn(true);
-  const handleLogout = () => setIsLoggedIn(false);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true); // Set logged-in state if token exists
+    }
+  }, []);
 
-  const ProtectedRoute = ({ children }) => {
-    return isLoggedIn ? children : <Navigate to="/login" replace />;
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
   };
 
   return (
@@ -26,17 +37,10 @@ function App() {
       <Navbar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/quote-request" element={<QuoteRequest />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/signup" element={<Signup />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/quote-request" element={<QuoteRequest />} />
+        
         <Route
           path="/move-request"
           element={
@@ -53,23 +57,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/quote-approval"
-          element={
-            <ProtectedRoute>
-              <QuoteApproval />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/booking-confirmation"
-          element={
-            <ProtectedRoute>
-              <BookingConfirmation />
-            </ProtectedRoute>
-          }
-        />
-        
       </Routes>
     </Router>
   );

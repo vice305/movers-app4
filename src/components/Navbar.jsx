@@ -15,11 +15,14 @@ function Navbar({ isLoggedIn, onLogout }) {
         {isLoggedIn ? (
           <>
             <Link to="/move-request" className="text-gray-600 hover:text-blue-600">Book a Move</Link>
+            <Link to="/quote-request" className="text-gray-600 hover:text-blue-600">Get Free Quote</Link>
+            <Link to="/inventory-checklist" className="text-gray-600 hover:text-blue-600">Inventory Checklist</Link>
             <button onClick={onLogout} className="text-gray-600 hover:text-blue-600">Logout</button>
           </>
         ) : (
           <>
             <Link to="/login" className="text-gray-600 hover:text-blue-600">Sign In</Link>
+            <Link to="/signup" className="text-gray-600 hover:text-blue-600">Sign Up</Link>
             <Link to="/move-request" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Book a Move</Link>
           </>
         )}
