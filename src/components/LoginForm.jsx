@@ -1,29 +1,30 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import logo from '../assets/logo.png';
 
 function LoginForm({ onLogin }) {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
+    password: '',
   });
 
   const [message, setMessage] = useState('');
 
   const handleChange = (e) => {
-    setFormData({ 
-      ...formData, 
-      [e.target.name]: e.target.value 
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Replace with your actual backend endpoint
-      const response = await axios.post('http://localhost:5000/api/login', formData);
+      const response = await axios.post('http://localhost:5000/api/auth/login', formData, {
+        headers: { 'Content-Type': 'application/json' },
+      });
       setMessage('Login successful!');
-      if (onLogin) onLogin(); // Notify parent component of successful login
-      console.log(response.data); // Handle token/session here (e.g., store token in localStorage)
+      const token = response.data.token;
+      localStorage.setItem('token', token);
+      if (onLogin) onLogin();
     } catch (error) {
       setMessage('Login failed. Please check your credentials.');
       console.error(error);
@@ -35,7 +36,7 @@ function LoginForm({ onLogin }) {
       <div className="bg-white p-8 rounded-xl shadow-xl w-full max-w-md">
         <div className="flex justify-center mb-6">
           <div className="bg-blue-500 text-white p-4 rounded-lg">
-            ⚡
+             <img src={logo} alt="Move Mate Logo" className="h-8 mb-50" />
           </div>
         </div>
         <h2 className="text-center text-2xl font-bold text-blue-700">Welcome to Move Mate</h2>
@@ -56,6 +57,15 @@ function LoginForm({ onLogin }) {
             name="email"
             placeholder="Enter your email"
             value={formData.email}
+            onChange={handleChange}
+            className="w-full border border-blue-200 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+            value={formData.password}
             onChange={handleChange}
             className="w-full border border-blue-200 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
             required

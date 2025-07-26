@@ -1,19 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function InventoryChecklist() {
   const [items, setItems] = useState([]);
   const [newItem, setNewItem] = useState({ name: '', quantity: 1, category: 'Furniture' });
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    fetchInventory();
+  }, []);
+
+  const fetchInventory = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('http://localhost:5000/api/inventory/list', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setItems(response.data);
+    } catch (error) {
+      setMessage('Error fetching inventory');
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewItem({ ...newItem, [name]: value });
   };
 
-  const handleAddItem = (e) => {
+  const handleAddItem = async (e) => {
     e.preventDefault();
     if (newItem.name.trim()) {
-      setItems([...items, { ...newItem, id: Date.now() }]);
-      setNewItem({ name: '', quantity: 1, category: 'Furniture' });
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.post('http://localhost:5000/api/inventory/add', newItem, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setItems([...items, response.data]);
+        setNewItem({ name: '', quantity: 1, category: 'Furniture' });
+        setMessage('Item added successfully!');
+      } catch (error) {
+        setMessage('Error adding item');
+      }
     }
   };
 
@@ -74,6 +101,7 @@ function InventoryChecklist() {
             Add Item
           </button>
         </form>
+        {message && <p className="mt-2 text-center text-sm text-green-600">{message}</p>}
       </section>
 
       {/* Inventory List */}
