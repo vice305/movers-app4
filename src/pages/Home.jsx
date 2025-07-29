@@ -1,6 +1,6 @@
 import React ,{useState} from 'react';
 import logo from '../assets/logo.png';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function Home() {
   const navigate = useNavigate();
@@ -15,7 +15,9 @@ function Home() {
       <section className="text-center py-16 bg-blue-600 text-white">
         <h1 className="text-4xl font-bold">Ready to Make Your Move?</h1>
         <p className="mt-4">Join thousands of satisfied customers who trust Move Mate for their relocation needs.</p>
-        <button className="mt-6 bg-white text-blue-600 px-6 py-2 rounded">Start Your Move Today</button>
+        <Link to="/move-request" className="mt-6 bg-white text-blue-600 px-6 py-1 rounded hover:bg-blue-100 transition duration-200">
+          Start Your Move Today
+        </Link>
       </section>
       <section className="py-16">
         <h2 className="text-3xl font-bold text-center">Why Choose Move Mate?</h2>

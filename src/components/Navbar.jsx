@@ -11,7 +11,8 @@ function Navbar({ isLoggedIn, onLogout }) {
       </div>
       <div className="space-x-4">
         <Link to="/" className="text-gray-600 hover:text-blue-600">Home</Link>
-        <a href="#pricing" className="text-gray-600 hover:text-blue-600">Pricing</a>
+        <Link to="/pricing" className="text-gray-600 hover:text-blue-600">Pricing</Link>
+        
         {isLoggedIn ? (
           <>
             <Link to="/move-request" className="text-gray-600 hover:text-blue-600">Book a Move</Link>

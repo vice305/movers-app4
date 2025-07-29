@@ -7,6 +7,7 @@ import Signup from './pages/Signup';
 import QuoteRequest from './pages/QuoteRequest';
 import MoveRequestForm from './pages/MoveRequestForm';
 import InventoryChecklist from './pages/InventoryChecklist';
+import Pricing from './pages/Pricing';
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('token');
@@ -40,6 +41,7 @@ function App() {
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/quote-request" element={<QuoteRequest />} />
+        <Route path="/pricing" element={<Pricing />} />
         
         <Route
           path="/move-request"
